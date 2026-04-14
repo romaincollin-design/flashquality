@@ -1,5 +1,11 @@
 'use client'
 import { useState } from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 const EMOJIS = [
   { emoji: '😍', label: 'Excellent' },
@@ -13,6 +19,15 @@ const EMOJIS = [
 export default function ScanReview({ commerce }: { commerce: any }) {
   const [selected, setSelected] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+
+  async function handleSubmit() {
+    if (!selected) return
+    await supabase.from('avis').insert({
+      pro_id: commerce.id,
+      emoji_code: selected,
+    })
+    setDone(true)
+  }
 
   if (done) return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
@@ -49,7 +64,7 @@ export default function ScanReview({ commerce }: { commerce: any }) {
         ))}
       </div>
       <button
-        onClick={() => selected && setDone(true)}
+        onClick={handleSubmit}
         disabled={!selected}
         className={`w-full py-4 rounded-2xl text-white font-semibold text-lg transition-all ${
           selected ? 'bg-blue-600 active:scale-95' : 'bg-gray-200 text-gray-400'
