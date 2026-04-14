@@ -1,14 +1,8 @@
-cat > src/app/dashboard/page.tsx << 'EOF'
 'use client'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
-
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 const EMOJIS = [
   { emoji: '😍', label: 'Excellent' },
   { emoji: '😊', label: 'Bien' },
@@ -17,13 +11,12 @@ const EMOJIS = [
   { emoji: '😕', label: 'Décevant' },
   { emoji: '😤', label: 'Mauvais' },
 ]
-
 export default function Dashboard() {
   const [pro, setPro] = useState<any>(null)
   const [avis, setAvis] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [copied, setCopied] = useState(false)
   const router = useRouter()
-
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -38,16 +31,15 @@ export default function Dashboard() {
     }
     load()
   }, [router])
-
   if (loading) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-400">Chargement...</p></div>
-  if (!pro) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Aucun commerce trouvé.</p></div>
-
+  if (!pro) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Aucun commerce.</p></div>
   const total = avis.length
   const aujourdhui = avis.filter(a => new Date(a.created_at).toDateString() === new Date().toDateString()).length
   const comptes = EMOJIS.map(e => ({ ...e, count: avis.filter(a => a.emoji_code === e.emoji).length }))
   const topEmoji = comptes.reduce((a, b) => a.count > b.count ? a : b, comptes[0])
   const scanUrl = 'https://flashquality.vercel.app/scan/' + pro.slug
-
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(scanUrl)
+  function copy() { navigator.clipboard.writeText(scanUrl); setCopied(true); setTimeout(() => setCopied(false), 2000) }
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-2xl mx-auto px-4 py-8">
@@ -65,21 +57,37 @@ export default function Dashboard() {
           </div>
           <div className="bg-white rounded-2xl p-4 text-center border border-gray-100">
             <p className="text-3xl font-bold text-gray-900">{aujourdhui}</p>
-            <p className="text-xs text-gray-400 mt-1">{"Aujourd'hui"}</p>
+            <p className="text-xs text-gray-400 mt-1">Aujourd'hui</p>
           </div>
           <div className="bg-white rounded-2xl p-4 text-center border border-gray-100">
             <p className="text-3xl">{total > 0 ? topEmoji.emoji : '—'}</p>
             <p className="text-xs text-gray-400 mt-1">Favori</p>
           </div>
         </div>
-        <div className="bg-blue-50 rounded-2xl p-4 mb-6 border border-blue-100">
-          <p className="text-xs text-blue-400 mb-1">Lien de votre page avis</p>
-          <p className="text-sm font-medium text-blue-700 break-all">{scanUrl}</p>
-          <button onClick={() => navigator.clipboard.writeText(scanUrl)} className="mt-2 text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg">Copier le lien</button>
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <button onClick={() => router.push('/dashboard/clients')} className="bg-white rounded-2xl p-4 border border-gray-100 text-left hover:border-blue-200 transition-colors">
+            <p className="text-2xl mb-1">👥</p>
+            <p className="text-sm font-semibold text-gray-700">Clients</p>
+          </button>
+          <button onClick={() => router.push('/dashboard/offres')} className="bg-white rounded-2xl p-4 border border-gray-100 text-left hover:border-blue-200 transition-colors">
+            <p className="text-2xl mb-1">⚡</p>
+            <p className="text-sm font-semibold text-gray-700">Offres flash</p>
+          </button>
+        </div>
+        <div className="bg-white rounded-2xl p-4 mb-6 border border-gray-100">
+          <p className="text-sm font-semibold text-gray-700 mb-4">Votre QR code</p>
+          <div className="flex items-center gap-6">
+            <img src={qrUrl} alt="QR Code" className="w-32 h-32 rounded-xl" />
+            <div className="flex-1">
+              <p className="text-xs text-gray-400 mb-1">Lien direct</p>
+              <p className="text-xs font-medium text-blue-700 break-all mb-3">{scanUrl}</p>
+              <button onClick={copy} className="text-xs bg-blue-600 text-white px-4 py-2 rounded-lg">{copied ? 'Copié !' : 'Copier le lien'}</button>
+            </div>
+          </div>
         </div>
         {total > 0 && (
           <div className="bg-white rounded-2xl p-4 mb-6 border border-gray-100">
-            <p className="text-sm font-semibold text-gray-700 mb-4">{"Répartition des avis"}</p>
+            <p className="text-sm font-semibold text-gray-700 mb-4">Répartition</p>
             <div className="space-y-2">
               {comptes.map(({ emoji, label, count }) => (
                 <div key={emoji} className="flex items-center gap-3">
@@ -96,7 +104,7 @@ export default function Dashboard() {
         <div className="bg-white rounded-2xl p-4 border border-gray-100">
           <p className="text-sm font-semibold text-gray-700 mb-4">Derniers avis</p>
           {avis.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-8">Aucun avis pour {"l'instant"}. Partagez votre lien !</p>
+            <p className="text-sm text-gray-400 text-center py-8">Aucun avis. Partagez votre QR code !</p>
           ) : (
             <div className="space-y-3">
               {avis.slice(0, 20).map((a) => (
@@ -115,4 +123,3 @@ export default function Dashboard() {
     </div>
   )
 }
-EOF
