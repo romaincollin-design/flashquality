@@ -45,7 +45,7 @@ export default function Dashboard() {
     (async()=>{
       const {data:{user}} = await sb.auth.getUser();
       if(!user){router.push("/login");return;}
-      const {data:p} = await sb.from("pros").select("*").eq("email",user.email).single();
+      const {data:p} = await sb.from("pros").select("*").eq("user_id",user.id).single();
       if(!p){router.push("/login");return;}
       setPro(p);
       const {data:rv} = await sb.from("reviews").select("*").eq("pro_slug",p.slug).order("created_at",{ascending:false});
