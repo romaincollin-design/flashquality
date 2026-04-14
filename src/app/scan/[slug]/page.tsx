@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { notFound } from 'next/navigation'
 import ScanReview from './ScanReview'
 
-export dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
 export default async function ScanPage({ params }: { params: { slug: string } }) {
   const supabase = createClient(
