@@ -24,7 +24,8 @@ function SHD({title,onBack,right}:{title:string;onBack?:()=>void;right?:React.Re
   </div>
 }
 
-export default function ClientApp(){
+type ProData = { nom: string; categorie: string; adresse: string | null; tel: string | null; slug: string } | null
+export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; offres?: { id: string; titre: string; description: string; expire_at: string; type: string }[]; slug: string | null } = { pro: null, offres: [], slug: null }){
   const [screen,setScreen]=useState<Screen>('home')
   const [nav,setNav]=useState<NavTab>('home')
   const [rating,setRating]=useState<number|null>(null)
