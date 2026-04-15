@@ -37,6 +37,8 @@ export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offr
   const [dPre,setDPre]=useState('')
   const [dAmt,setDAmt]=useState('')
   const [dCat,setDCat]=useState('🍽️ Resto')
+  const OFFRES=offresSupabase||[]
+  const OF=OFFRES[0]||null
   const PRO={name:pro?.nom||'Commerce',sub:(pro?.categorie||'')+' · '+(pro?.adresse||''),badge:pro?.categorie||'',initials:(pro?.nom||'C').split(' ').map((w:string)=>w[0]||'').join('').slice(0,2).toUpperCase(),avatarBg:'#FEF3C7',avatarCol:'#D97706',rating:'4.7',tel:pro?.tel||'',addr:pro?.adresse||'',hours:''}
   const [showMsg,setShowMsg]=useState(false)
   const [msg,setMsg]=useState('')
