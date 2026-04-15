@@ -23,7 +23,7 @@ function SHD({title,onBack,right}:{title:string;onBack?:()=>void;right?:React.Re
   </div>
 }
 
-export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offres:any[],slug:string}){
+export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offres:any[],slug:string|null}){
   const [screen,setScreen]=useState<Screen>('home')
   const [nav,setNav]=useState<NavTab>('home')
   const [rating,setRating]=useState<number|null>(null)
