@@ -6,7 +6,7 @@ type NavTab = 'home'|'carnet'|'depenses'|'abonnements'|'profile'
 
 const A='#7C5CFC',AD='#5538D4',AL='#EDE8FF',BG='#F0EDE8',RC=22
 const CARD:React.CSSProperties={background:'white',borderRadius:RC,border:'2.5px solid #F0EDE8',boxSizing:'border-box'}
-const PRO={name:'Trattoria Bella',sub:'Restaurant italien · Nice, 06',badge:'Restaurant',initials:'TB',avatarBg:'#FEF3C7',avatarCol:'#D97706',rating:'4.7',tel:'04 9X XX XX XX',addr:'5 rue de la Paix, Nice',hours:'Mar–Dim · 12h–22h30'}
+const PRO={name:pro?.nom||'Commerce',sub:(pro?.categorie||'')+' · '+(pro?.adresse||''),badge:pro?.categorie||'',initials:(pro?.nom||'C').split(' ').map((w:string)=>w[0]||'').join('').slice(0,2).toUpperCase(),avatarBg:'#FEF3C7',avatarCol:'#D97706',rating:'4.7',tel:pro?.tel||'',addr:pro?.adresse||'',hours:''}
 const RATINGS=[{emoji:'😍',label:'Génial'},{emoji:'👍',label:'Top'},{emoji:'🙂',label:'Bien'},{emoji:'😐',label:'Moyen'},{emoji:'👎',label:'Décevant'},{emoji:'🚫',label:'Jamais'}]
 const PROS=[{id:'t',initials:'TB',bg:'#FEF3C7',col:'#D97706',name:'Trattoria Bella',sub:'Restaurant · Nice · il y a 2j',rating:'4.7',hasFlash:true},{id:'c',initials:'PC',bg:'#ECFDF5',col:'#059669',name:'Plomberie Carrel',sub:'Artisan · Grasse · il y a 2 sem.',rating:'4.9',hasFlash:false}]
 const NOTIFS=[{id:'n1',ini:'⚡',ibg:'#FEF3C7',icol:'#D97706',title:'Trattoria Bella · Offre flash',desc:'Pizza –30% ce soir jusqu’à 21h.',time:'Il y a 12 min',dot:'#FF4D6D'},{id:'n2',ini:'🏆',ibg:'#EDE8FF',icol:'#7C5CFC',title:'FlashQuality',desc:'Niveau 2 atteint ! Tests produits débloqués.',time:'Il y a 1h',dot:A}]
@@ -24,7 +24,7 @@ function SHD({title,onBack,right}:{title:string;onBack?:()=>void;right?:React.Re
   </div>
 }
 
-export default function ClientApp(){
+export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offres:any[],slug:string}){
   const [screen,setScreen]=useState<Screen>('home')
   const [nav,setNav]=useState<NavTab>('home')
   const [rating,setRating]=useState<number|null>(null)
