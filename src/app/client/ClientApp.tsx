@@ -24,8 +24,7 @@ function SHD({title,onBack,right}:{title:string;onBack?:()=>void;right?:React.Re
   </div>
 }
 
-type ProData = { nom: string; categorie: string; adresse: string | null; tel: string | null; slug: string } | null
-export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; offres?: { id: string; titre: string; description: string; expire_at: string; type: string }[]; slug: string | null } = { pro: null, offres: [], slug: null }){
+export default function ClientApp(){
   const [screen,setScreen]=useState<Screen>('home')
   const [nav,setNav]=useState<NavTab>('home')
   const [rating,setRating]=useState<number|null>(null)
@@ -43,18 +42,6 @@ export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; of
   const [msg,setMsg]=useState('')
   const [cf,setCf]=useState('all')
   const fref=useRef<HTMLInputElement>(null)
-  const DP = pro ? {
-    name: pro.nom,
-    sub: pro.categorie + (pro.adresse ? ' · ' + pro.adresse : ''),
-    badge: pro.categorie,
-    initials: pro.nom.split(' ').map((w: string) => w[0]).join('').slice(0,2).toUpperCase(),
-    avatarBg: '#FEF3C7',
-    avatarCol: '#D97706',
-    rating: '4.7',
-    tel: pro.tel || '',
-    addr: pro.adresse || '',
-    hours: '',
-  } : PRO
 
   useEffect(()=>{const iv=setInterval(()=>setSecs(s=>Math.max(0,s-1)),1000);return()=>clearInterval(iv)},[])
   const go=(s:Screen)=>setScreen(s)
@@ -75,14 +62,14 @@ export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; of
       <div style={{position:'absolute',width:140,height:140,top:-50,right:-40,borderRadius:'50%',background:'rgba(255,255,255,.1)'}}/>
       <div style={{position:'absolute',width:80,height:80,bottom:-20,right:70,borderRadius:'50%',background:'rgba(255,255,255,.1)'}}/>
       <div style={{fontSize:9,fontWeight:800,color:'rgba(255,255,255,.55)',textTransform:'uppercase',letterSpacing:'.12em',marginBottom:4}}>Bienvenue chez</div>
-      <div style={{fontSize:22,fontWeight:900,color:'white',lineHeight:1.1,letterSpacing:'-.03em',marginBottom:4}}>{DP.name}</div>
-      <div style={{fontSize:12,color:'rgba(255,255,255,.75)',fontWeight:700,marginBottom:14}}>{DP.sub}</div>
+      <div style={{fontSize:22,fontWeight:900,color:'white',lineHeight:1.1,letterSpacing:'-.03em',marginBottom:4}}>{PRO.name}</div>
+      <div style={{fontSize:12,color:'rgba(255,255,255,.75)',fontWeight:700,marginBottom:14}}>{PRO.sub}</div>
       <div style={{display:'flex',gap:7}}>
         <div style={{display:'inline-flex',alignItems:'center',background:'rgba(255,255,255,.22)',border:'1px solid rgba(255,255,255,.35)',borderRadius:100,padding:'5px 11px',fontSize:10,color:'white',fontWeight:800}}>✓ Vérifié</div>
-        <div style={{display:'inline-flex',alignItems:'center',background:'rgba(255,255,255,.22)',border:'1px solid rgba(255,255,255,.35)',borderRadius:100,padding:'5px 11px',fontSize:10,color:'white',fontWeight:800}}>{'🍽️'} {DP.badge}</div>
+        <div style={{display:'inline-flex',alignItems:'center',background:'rgba(255,255,255,.22)',border:'1px solid rgba(255,255,255,.35)',borderRadius:100,padding:'5px 11px',fontSize:10,color:'white',fontWeight:800}}>{'🍽️'} {PRO.badge}</div>
       </div>
       <div style={{position:'absolute',top:14,right:14,background:'rgba(255,255,255,.22)',backdropFilter:'blur(12px)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:RC,padding:'8px 12px',textAlign:'center'}}>
-        <div style={{fontSize:20,fontWeight:900,color:'white',lineHeight:1,fontFamily:"'Fredoka',sans-serif"}}>{DP.rating}</div>
+        <div style={{fontSize:20,fontWeight:900,color:'white',lineHeight:1,fontFamily:"'Fredoka',sans-serif"}}>{PRO.rating}</div>
         <div style={{fontSize:9,color:'rgba(255,255,255,.7)',fontWeight:800}}>⭐ note</div>
       </div>
       <div style={{marginTop:14,background:'rgba(255,255,255,.15)',borderRadius:100,height:7,overflow:'hidden'}}>
@@ -177,7 +164,7 @@ export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; of
       </div>
       <div style={{background:AL,borderRadius:RC,padding:'14px 13px',border:'2.5px dashed rgba(124,92,252,.28)',textAlign:'center'}}>
         <div style={{fontSize:14,fontWeight:900,color:'#1A1033',marginBottom:3}}>{'🔔'} Recevoir les prochaines offres</div>
-        <div style={{fontSize:11,color:'#A8A5A0',fontWeight:700,marginBottom:12}}>Notifié·e quand {DP.name} publie une offre</div>
+        <div style={{fontSize:11,color:'#A8A5A0',fontWeight:700,marginBottom:12}}>Notifié·e quand {PRO.name} publie une offre</div>
         <button style={{width:'100%',padding:12,borderRadius:100,background:A,color:'white',fontSize:13,fontWeight:900,border:'none',cursor:'pointer',fontFamily:'inherit',boxSizing:'border-box'}}>M&apos;abonner gratuitement</button>
       </div>
     </div>
@@ -188,16 +175,16 @@ export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; of
     <div style={{flex:1,overflowY:'auto'}}>
       <div style={{margin:'12px 13px 0',...CARD,padding:14}}>
         <div style={{display:'flex',gap:12,alignItems:'center',marginBottom:12}}>
-          <div style={{width:48,height:48,borderRadius:RC,background:DP.avatarBg,color:DP.avatarCol,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:900,flexShrink:0}}>{DP.initials}</div>
-          <div><div style={{fontSize:16,fontWeight:900,color:'#1A1033'}}>{DP.name}</div><div style={{fontSize:11,color:'#B0ADA8',fontWeight:700,marginTop:2}}>{DP.sub}</div></div>
+          <div style={{width:48,height:48,borderRadius:RC,background:PRO.avatarBg,color:PRO.avatarCol,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:900,flexShrink:0}}>{PRO.initials}</div>
+          <div><div style={{fontSize:16,fontWeight:900,color:'#1A1033'}}>{PRO.name}</div><div style={{fontSize:11,color:'#B0ADA8',fontWeight:700,marginTop:2}}>{PRO.sub}</div></div>
         </div>
-        {([['📞',DP.tel],['📍',DP.addr],['🕓',DP.hours]] as [string,string][]).map(([ico,val])=><div key={val} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+        {([['📞',PRO.tel],['📍',PRO.addr],['🕓',PRO.hours]] as [string,string][]).map(([ico,val])=><div key={val} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
           <div style={{width:32,height:32,borderRadius:10,background:'#F0F4F9',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{ico}</div>
           <span style={{fontSize:13,fontWeight:700,color:'#1A1033'}}>{val}</span>
         </div>)}
       </div>
       <div style={{padding:'12px 13px 0',display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
-        <a href={`tel:${DP.tel.replace(/\s/g,'')}`} style={{background:AL,border:`2px solid ${A}`,borderRadius:RC,padding:'12px 8px',display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer',textDecoration:'none'}}>
+        <a href={`tel:${PRO.tel.replace(/\s/g,'')}`} style={{background:AL,border:`2px solid ${A}`,borderRadius:RC,padding:'12px 8px',display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer',textDecoration:'none'}}>
           <div style={{fontSize:22}}>{'📞'}</div><div style={{fontSize:11,fontWeight:900,color:A}}>Appeler</div>
         </a>
         <div onClick={()=>setShowMsg(!showMsg)} style={{background:'white',border:'2px solid #E8E4DC',borderRadius:RC,padding:'12px 8px',display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer'}}>
@@ -398,15 +385,15 @@ export default function ClientApp({ pro, offres = [], slug }: { pro: ProData; of
     <div style={{minHeight:'100vh',display:'flex',justifyContent:'center',background:'#1A1033',fontFamily:"'Nunito',sans-serif"}}>
       <div style={{width:'100%',maxWidth:430,minHeight:'100vh',background:BG,display:'flex',flexDirection:'column',position:'relative',overflow:'hidden'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {screen==='home'{screen==='home'&&<Home/>}{screen==='home'&&<Home/>}Home()}
-          {screen==='review'{screen==='review'&&<Review/>}{screen==='review'&&<Review/>}Review()}
-          {screen==='offers'{screen==='offers'&&<Offers/>}{screen==='offers'&&<Offers/>}Offers()}
-          {screen==='contact'{screen==='contact'&&<Contact/>}{screen==='contact'&&<Contact/>}Contact()}
-          {screen==='depenses'{screen==='depenses'&&<Depenses/>}{screen==='depenses'&&<Depenses/>}Depenses()}
-          {screen==='carnet'{screen==='carnet'&&<Carnet/>}{screen==='carnet'&&<Carnet/>}Carnet()}
-          {screen==='profile'{screen==='profile'&&<Profile/>}{screen==='profile'&&<Profile/>}Profile()}
-          {screen==='notifs'{screen==='notifs'&&<Notifs/>}{screen==='notifs'&&<Notifs/>}Notifs()}
-          {screen==='abonnements'{screen==='abonnements'&&<Abos/>}{screen==='abonnements'&&<Abos/>}Abos()}
+          {screen==='home'&&<Home/>}
+          {screen==='review'&&<Review/>}
+          {screen==='offers'&&<Offers/>}
+          {screen==='contact'&&<Contact/>}
+          {screen==='depenses'&&<Depenses/>}
+          {screen==='carnet'&&<Carnet/>}
+          {screen==='profile'&&<Profile/>}
+          {screen==='notifs'&&<Notifs/>}
+          {screen==='abonnements'&&<Abos/>}
         </div>
         <BNav/>
         {cel&&<div style={{position:'absolute',inset:0,background:`linear-gradient(135deg,${A},${AD})`,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',zIndex:100,textAlign:'center',padding:24}}>
