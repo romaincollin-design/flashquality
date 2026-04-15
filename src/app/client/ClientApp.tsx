@@ -14,8 +14,6 @@ const CARD:React.CSSProperties={background:'white',borderRadius:RC,border:'2.5px
 const RATINGS=[{emoji:'😍',label:'Génial'},{emoji:'👍',label:'Top'},{emoji:'🙂',label:'Bien'},{emoji:'😐',label:'Moyen'},{emoji:'👎',label:'Décevant'},{emoji:'🚫',label:'Jamais'}]
 const PROS=[{id:'t',initials:'TB',bg:'#FEF3C7',col:'#D97706',name:'Trattoria Bella',sub:'Restaurant · Nice · il y a 2j',rating:'4.7',hasFlash:true},{id:'c',initials:'PC',bg:'#ECFDF5',col:'#059669',name:'Plomberie Carrel',sub:'Artisan · Grasse · il y a 2 sem.',rating:'4.9',hasFlash:false}]
 const NOTIFS=[{id:'n1',ini:'⚡',ibg:'#FEF3C7',icol:'#D97706',title:'Trattoria Bella · Offre flash',desc:'Pizza –30% ce soir jusqu’à 21h.',time:'Il y a 12 min',dot:'#FF4D6D'},{id:'n2',ini:'🏆',ibg:'#EDE8FF',icol:'#7C5CFC',title:'FlashQuality',desc:'Niveau 2 atteint ! Tests produits débloqués.',time:'Il y a 1h',dot:A}]
-const SUBS=[{icon:'🏠',ibg:'#FFF1EB',name:'Assurance AXA',price:'72€/mois',date:'27/04/2026',cd:'J-14',cdc:'#DC2626'},{icon:'📡',ibg:'#EEF4FF',name:'Box Internet Orange',price:'36€/mois',date:'15/09/2026',cd:'J-155',cdc:'#10B981'},{icon:'⚡',ibg:'#F0FDF9',name:'Électricité EDF',price:'89€/mois',date:'01/01/2027',cd:'J-263',cdc:'#10B981'}]
-const DEPS=[{icon:'🍽️',ibg:'#F3F0FF',name:'Trattoria Bella',cat:'Restaurant · Hier',amt:'48,50 €'},{icon:'✂️',ibg:'#FFF0FB',name:'Studio Coiff',cat:'Coiffeur · Il y a 3j',amt:'65,00 €'},{icon:'⛽',ibg:'#E0FDF4',name:'Total Énergies',cat:'Essence · Il y a 5j',amt:'82,30 €'}]
 
 function ft(s:number){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;return (h?h+'h ':'')+String(m).padStart(2,'0')+'m '+String(sc).padStart(2,'0')+'s'}
 function fs(s:number){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return (h?h+'h ':'')+String(m).padStart(2,'0')+'m'}
@@ -407,81 +405,6 @@ export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offr
     </div>
   </div>
 
-  const Depenses=()=><div style={{display:'flex',flexDirection:'column',flex:1,overflow:'hidden'}}>
-    <div style={{background:'linear-gradient(135deg,#10B981,#059669)',padding:'18px 18px 16px',flexShrink:0}}>
-      <div style={{fontSize:19,fontWeight:900,color:'white',marginBottom:2}}>{'🧾'} Mes dépenses</div>
-      <div style={{fontSize:12,color:'rgba(255,255,255,.7)',fontWeight:700,marginBottom:12}}>Photo ticket · Suivi · Historique</div>
-      <div style={{display:'flex',gap:12}}>
-        {([['324€','Ce mois'],['12','Tickets'],['6','Catégories']] as [string,string][]).map(([v,l])=><div key={l} style={{background:'rgba(255,255,255,.15)',borderRadius:12,padding:'8px 12px',textAlign:'center'}}>
-          <div style={{fontSize:18,fontWeight:900,color:'white',fontFamily:"'Fredoka',sans-serif"}}>{v}</div>
-          <div style={{fontSize:9,color:'rgba(255,255,255,.65)',fontWeight:800,marginTop:2}}>{l}</div>
-        </div>)}
-      </div>
-    </div>
-    <div style={{flex:1,overflowY:'auto',paddingBottom:16}}>
-      <div style={{margin:'12px 12px 0',background:'white',borderRadius:RC,border:'2px solid #E8E4DC',padding:14}}>
-        <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:12}}>Répartition ce mois</div>
-        <div style={{display:'flex',gap:6,alignItems:'flex-end',height:72}}>
-          {([['55px',A,'Resto'],['38px','#EC4899','Beauté'],['28px','#F59E0B','Sortie'],['22px','#06B6D4','Coiffeur'],['42px','#10B981','Essence'],['18px','#B0ADA8','Autre']] as [string,string,string][]).map(([h,c,l])=><div key={l} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
-            <div style={{width:'100%',height:h,background:c,borderRadius:'6px 6px 0 0'}}/>
-            <div style={{fontSize:9,color:'#B0ADA8',fontWeight:700}}>{l}</div>
-          </div>)}
-        </div>
-      </div>
-      <div style={{margin:'10px 12px 0'}}>
-        <div onClick={()=>fref.current?.click()} style={{background:'white',borderRadius:RC,border:'2.5px dashed #D0CEC9',padding:'20px 16px',textAlign:'center',cursor:'pointer'}}>
-          <div style={{fontSize:32,marginBottom:6}}>{'📸'}</div>
-          <div style={{fontSize:14,fontWeight:900,color:'#1A1033',marginBottom:2}}>Scanner un ticket</div>
-          <div style={{fontSize:12,color:'#B0ADA8',fontWeight:700}}>Photo · Galerie · PDF</div>
-        </div>
-        <input ref={fref} type="file" accept="image/*" style={{display:'none'}}/>
-        <div style={{textAlign:'center',marginTop:8}}>
-          <button onClick={ai} style={{display:'inline-flex',alignItems:'center',gap:6,background:aiD?'linear-gradient(135deg,#10B981,#34D399)':`linear-gradient(135deg,${A},${AD})`,color:'white',fontSize:12,fontWeight:900,padding:'8px 16px',borderRadius:100,border:'none',cursor:'pointer',fontFamily:'inherit',opacity:aiL?0.7:1}}>
-            {aiL?'✦ Analyse en cours…':aiD?'✦ Extraction complète !':'✦ Identifier avec l’IA'}
-          </button>
-        </div>
-      </div>
-      {aiD&&<div style={{margin:'10px 12px 0',background:'white',borderRadius:RC,border:`2.5px solid ${A}`,overflow:'hidden'}}>
-        <div style={{background:`linear-gradient(135deg,${A},${AD})`,padding:'10px 13px',display:'flex',alignItems:'center',gap:8}}>
-          <div style={{width:28,height:28,borderRadius:8,background:'rgba(255,255,255,.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'white'}}>✦</div>
-          <div style={{fontSize:13,fontWeight:900,color:'white'}}>Identification automatique</div>
-        </div>
-        <div style={{padding:'12px 13px'}}>
-          {([['Prestataire','Trattoria Bella'],['Catégorie','🍽️ Restauration'],['Date',new Date().toLocaleDateString('fr-FR')],['Montant','48,50 €']] as [string,string][]).map(([l,v])=><div key={l} style={{display:'flex',justifyContent:'space-between',padding:'7px 0',borderBottom:'1px solid #F0EDE8'}}>
-            <span style={{fontSize:12,color:'#B0ADA8',fontWeight:700}}>{l}</span>
-            <span style={{fontSize:12,fontWeight:900,color:'#1A1033'}}>{v}</span>
-          </div>)}
-        </div>
-      </div>}
-      <div style={{margin:'10px 12px 0',background:'white',borderRadius:RC,border:'2px solid #E8E4DC',padding:14}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
-          <div>
-            <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:5}}>Prestataire</div>
-            <input value={dPre} onChange={e=>setDPre(e.target.value)} placeholder="Nom…" style={{width:'100%',border:'2px solid #F0EDE8',borderRadius:12,padding:'8px 10px',fontSize:13,fontWeight:700,color:'#1A1033',fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}/>
-          </div>
-          <div>
-            <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:5}}>Montant</div>
-            <input value={dAmt} onChange={e=>setDAmt(e.target.value)} type="number" step="0.01" placeholder="0,00 €" style={{width:'100%',border:'2px solid #F0EDE8',borderRadius:12,padding:'8px 10px',fontSize:13,fontWeight:700,fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}/>
-          </div>
-        </div>
-        <div style={{marginBottom:12}}>
-          <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:7}}>Catégorie</div>
-          <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
-            {['🍽️ Resto','💅 Beauté','🎭 Sortie','✂️ Coiffeur','⛽ Essence','🏥 Santé','📦 Autre'].map(cat=><div key={cat} onClick={()=>setDCat(cat)} style={{padding:'6px 12px',borderRadius:100,border:`2px solid ${dCat===cat?A:'#E8E4DC'}`,background:dCat===cat?AL:'white',fontSize:12,fontWeight:800,color:dCat===cat?A:'#B0ADA8',cursor:'pointer'}}>{cat}</div>)}
-          </div>
-        </div>
-        <button onClick={()=>setDepCel(true)} style={{width:'100%',padding:12,borderRadius:100,background:'#10B981',color:'white',fontSize:13,fontWeight:900,border:'none',cursor:'pointer',fontFamily:'inherit',boxSizing:'border-box'}}>{'💾'} Enregistrer</button>
-      </div>
-      <div style={{margin:'12px 12px 0'}}>
-        <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:9}}>Historique récent</div>
-        {DEPS.map(d=><div key={d.name} style={{...CARD,display:'flex',alignItems:'center',gap:10,padding:'12px 13px',marginBottom:8}}>
-          <div style={{width:36,height:36,borderRadius:10,background:d.ibg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>{d.icon}</div>
-          <div style={{flex:1}}><div style={{fontSize:13,fontWeight:900,color:'#1A1033'}}>{d.name}</div><div style={{fontSize:11,color:'#B0ADA8',fontWeight:700,marginTop:2}}>{d.cat}</div></div>
-          <div style={{fontSize:14,fontWeight:900,color:'#1A1033'}}>{d.amt}</div>
-        </div>)}
-      </div>
-    </div>
-  </div>
 
   const Carnet=()=><div style={{display:'flex',flexDirection:'column',flex:1,overflow:'hidden'}}>
     <SHD title="Mes lieux" right={<span style={{fontSize:12,fontWeight:800,color:A,cursor:'pointer'}}>+ Ajouter</span>}/>
@@ -539,30 +462,6 @@ export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offr
     </div>
   </div>
 
-  const Abos=()=><div style={{display:'flex',flexDirection:'column',flex:1,overflow:'hidden'}}>
-    <SHD title="Contrats &amp; abonnements" right={<span style={{fontSize:12,fontWeight:800,color:A,cursor:'pointer'}}>+ Ajouter</span>}/>
-    <div style={{flex:1,overflowY:'auto',padding:'12px 13px 14px'}}>
-      <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:9}}>Contrats annuels</div>
-      {SUBS.map(s=><div key={s.name} style={{background:'white',borderRadius:RC,border:'2px solid #F0EDE8',padding:'12px 14px',marginBottom:8,display:'flex',alignItems:'center',gap:10}}>
-        <div style={{width:36,height:36,borderRadius:10,background:s.ibg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>{s.icon}</div>
-        <div style={{flex:1}}><div style={{fontSize:13,fontWeight:900,color:'#1A1033'}}>{s.name}</div><div style={{fontSize:11,color:'#B0ADA8',fontWeight:700,marginTop:2}}>{s.price} · {s.date}</div></div>
-        <div style={{fontSize:12,fontWeight:900,color:s.cdc}}>{s.cd}</div>
-      </div>)}
-      <div style={{fontSize:10,fontWeight:900,color:'#B0ADA8',textTransform:'uppercase',letterSpacing:'.08em',margin:'14px 0 8px'}}>Abonnements numériques</div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:12}}>
-        {([{icon:'🎬',name:'Netflix',price:'13,99€/mois',status:'Actif',color:'#10B981'},{icon:'🎵',name:'Spotify',price:'9,99€/mois',status:'Peu utilisé',color:'#E8A820'},{icon:'📱',name:'Forfait SFR',price:'19,99€/mois',status:'Actif',color:'#10B981'},{icon:'🏋️',name:'Basic Fit',price:'19,99€/mois',status:'Pas utilisé',color:'#DC2626'}] as {icon:string;name:string;price:string;status:string;color:string}[]).map(s=><div key={s.name} style={{background:'white',borderRadius:RC,border:'2px solid #F0EDE8',padding:'10px 12px'}}>
-          <div style={{fontSize:18,marginBottom:4}}>{s.icon}</div>
-          <div style={{fontSize:12,fontWeight:900,color:'#1A1033'}}>{s.name}</div>
-          <div style={{fontSize:11,color:'#B0ADA8'}}>{s.price}</div>
-          <div style={{fontSize:10,fontWeight:800,color:s.color,marginTop:4}}>● {s.status}</div>
-        </div>)}
-      </div>
-      <div style={{background:'#FFFBEB',borderRadius:RC,border:'2px solid #E8A820',padding:'12px 14px'}}>
-        <div style={{fontSize:12,fontWeight:900,color:'#92400E',marginBottom:4}}>{'💡'} Conseil FQ</div>
-        <div style={{fontSize:12,fontWeight:700,color:'#1A1033',lineHeight:1.5}}>Spotify et Basic Fit non utilisés depuis 3 semaines. Économie possible : <strong>29,98€/mois</strong>.</div>
-      </div>
-    </div>
-  </div>
 
   function Jeux(){
     return <div style={{display:'flex',flexDirection:'column',flex:1,overflow:'hidden'}}>
