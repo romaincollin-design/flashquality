@@ -385,15 +385,15 @@ export default function ClientApp(){
     <div style={{minHeight:'100vh',display:'flex',justifyContent:'center',background:'#1A1033',fontFamily:"'Nunito',sans-serif"}}>
       <div style={{width:'100%',maxWidth:430,minHeight:'100vh',background:BG,display:'flex',flexDirection:'column',position:'relative',overflow:'hidden'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {screen==='home'&&<Home/>}
-          {screen==='review'&&<Review/>}
-          {screen==='offers'&&<Offers/>}
-          {screen==='contact'&&<Contact/>}
-          {screen==='depenses'&&<Depenses/>}
-          {screen==='carnet'&&<Carnet/>}
-          {screen==='profile'&&<Profile/>}
-          {screen==='notifs'&&<Notifs/>}
-          {screen==='abonnements'&&<Abos/>}
+          {screen==='home'{screen==='home'&&<Home/>}{screen==='home'&&<Home/>}Home()}
+          {screen==='review'{screen==='review'&&<Review/>}{screen==='review'&&<Review/>}Review()}
+          {screen==='offers'{screen==='offers'&&<Offers/>}{screen==='offers'&&<Offers/>}Offers()}
+          {screen==='contact'{screen==='contact'&&<Contact/>}{screen==='contact'&&<Contact/>}Contact()}
+          {screen==='depenses'{screen==='depenses'&&<Depenses/>}{screen==='depenses'&&<Depenses/>}Depenses()}
+          {screen==='carnet'{screen==='carnet'&&<Carnet/>}{screen==='carnet'&&<Carnet/>}Carnet()}
+          {screen==='profile'{screen==='profile'&&<Profile/>}{screen==='profile'&&<Profile/>}Profile()}
+          {screen==='notifs'{screen==='notifs'&&<Notifs/>}{screen==='notifs'&&<Notifs/>}Notifs()}
+          {screen==='abonnements'{screen==='abonnements'&&<Abos/>}{screen==='abonnements'&&<Abos/>}Abos()}
         </div>
         <BNav/>
         {cel&&<div style={{position:'absolute',inset:0,background:`linear-gradient(135deg,${A},${AD})`,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',zIndex:100,textAlign:'center',padding:24}}>
