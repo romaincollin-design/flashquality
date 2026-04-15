@@ -48,7 +48,7 @@ export default function ClientApp({pro,offres:offresSupabase,slug}:{pro:any,offr
   useEffect(()=>{const iv=setInterval(()=>setSecs(s=>Math.max(0,s-1)),1000);return()=>clearInterval(iv)},[])
   const go=(s:Screen)=>setScreen(s)
   const nt=(n:NavTab,s:Screen)=>{setNav(n);setScreen(s)}
-  const ai=()=>{setAiL(true);setAiD(false);setTimeout(()=>{setDPre('Trattoria Bella');setDAmt('48.50');setAiL(false);setAiD(true)},1800)}
+  const ai=()=>{setAiL(true);setAiD(false);setTimeout(()=>{setDPre(pro?.nom||'Commerce');setDAmt('48.50');setAiL(false);setAiD(true)},1800)}
 
   function AC({hot,onClick,badge,bc,icon,title,sub,ac}:{hot?:boolean;onClick:()=>void;badge?:string;bc?:string;icon:string;title:string;sub:string;ac?:string}){
     return <div onClick={onClick} style={{background:hot?AL:ac?'#D1FAF0':'white',borderRadius:RC,padding:'14px 12px 12px',cursor:'pointer',border:`2px solid ${hot?A:ac||'#E8E4DC'}`,position:'relative',overflow:'hidden',boxShadow:'0 2px 10px rgba(0,0,0,.07)',boxSizing:'border-box'}}>
